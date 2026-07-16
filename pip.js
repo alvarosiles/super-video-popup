@@ -1,5 +1,5 @@
 /**
- * pip.js — Float Video Pro
+ * pip.js — Super Video Popup
  * ─────────────────────────────────────────────────────────────────────────
  * Construye y controla la ventana flotante "Picture-in-Picture" usando la
  * Document Picture-in-Picture API (documentPictureInPicture.requestWindow),
@@ -237,7 +237,6 @@
       // la ventana a mano; no es un error crítico, seguimos igual.
     }
     if (syncSizeButtonsRef) syncSizeButtonsRef();
-    chrome.storage.local.set({ fvpLastSize: size }).catch(() => {});
   }
 
   /** Fallback a la PiP nativa clásica cuando Document PiP no está disponible. */
@@ -284,17 +283,6 @@
     syncSizeButtonsRef = syncSizeButtons;
 
     pipWindow.addEventListener('pagehide', restoreVideo, { once: true });
-
-    // Aplicar el último tamaño recordado (no bloquea la apertura: el gesto
-    // de usuario ya se consumió al llamar requestWindow más arriba).
-    chrome.storage.local
-      .get(['fvpLastSize'])
-      .then((data) => {
-        if (data.fvpLastSize && data.fvpLastSize !== DEFAULT_SIZE) {
-          resize(data.fvpLastSize);
-        }
-      })
-      .catch(() => {});
 
     return pipWindow;
   }

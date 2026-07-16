@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# 3-build.sh — Float Video Pro
+# 3-build.sh — Super Video Popup
 # ─────────────────────────────────────────────────────────────────────────
 # Empaqueta la extensión en un .zip listo para subir a la Chrome Web Store
 # (o para distribuir manualmente). Solo incluye los archivos que la
@@ -12,7 +12,7 @@
 #   ./scripts/3-build.sh
 #
 # Salida:
-#   dist/float-video-pro-v<version>.zip
+#   dist/super-video-popup-v<version>.zip
 
 set -euo pipefail
 
@@ -81,7 +81,7 @@ fi
 
 # ── 4. Empaquetar ───────────────────────────────────────────────────────────
 mkdir -p "$DIST_DIR"
-ZIP_PATH="$DIST_DIR/float-video-pro-v${VERSION}.zip"
+ZIP_PATH="$DIST_DIR/super-video-popup-v${VERSION}.zip"
 rm -f "$ZIP_PATH"
 
 zip -q -X "$ZIP_PATH" "${FILES[@]}"

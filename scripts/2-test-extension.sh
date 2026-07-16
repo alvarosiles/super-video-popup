@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# 2-test-extension.sh — Float Video Pro
+# 2-test-extension.sh — Super Video Popup
 # ─────────────────────────────────────────────────────────────────────────
 # Deja la extensión lista para probar de un solo comando:
 #
@@ -8,7 +8,7 @@
 #      perfil ni tus sesiones habituales).
 #   2. Activa "Developer mode" automáticamente (Chrome ya no acepta
 #      extensiones descomprimidas sin esto).
-#   3. Carga Float Video Pro con el método oficial del DevTools Protocol
+#   3. Carga Super Video Popup con el método oficial del DevTools Protocol
 #      (Extensions.loadUnpacked) — el reemplazo moderno de --load-extension,
 #      que Chrome empezó a ignorar si Developer mode está apagado.
 #   4. Abre YouTube (o la URL que le pases) para que pruebes directo.
@@ -20,7 +20,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROFILE_DIR="/tmp/float-video-pro-test-profile"
+PROFILE_DIR="/tmp/super-video-popup-test-profile"
 PORT=9333
 URL="${1:-https://www.youtube.com/watch?v=jNQXAC9IVRw}"
 
@@ -72,7 +72,7 @@ echo "Chrome abriéndose... activando Developer mode e instalando la extensión.
 
 if python3 "$(dirname "${BASH_SOURCE[0]}")/_cdp_loader.py" "$PORT" "$ROOT_DIR" "$URL"; then
   echo
-  echo "Listo. Float Video Pro está instalada y activa en esta ventana de Chrome."
+  echo "Listo. Super Video Popup está instalada y activa en esta ventana de Chrome."
   echo "Dale play al video y abre el popup (icono de la barra de extensiones) para activar el Picture-in-Picture."
 else
   echo

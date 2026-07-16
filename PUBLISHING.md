@@ -1,4 +1,4 @@
-# Cómo publicar Float Video Pro en la Chrome Web Store
+# Cómo publicar Super Video Popup en la Chrome Web Store
 
 Guía paso a paso para subir la extensión al [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole).
 
@@ -6,7 +6,7 @@ Guía paso a paso para subir la extensión al [Chrome Web Store Developer Dashbo
 
 ```bash
 ./scripts/3-build.sh
-# → dist/float-video-pro-v1.0.0.zip
+# → dist/super-video-popup-v1.0.0.zip
 ```
 
 Vuelve a correrlo cada vez que cambies el código, antes de subir una nueva
@@ -15,13 +15,13 @@ versión.
 ## 1. Subir el paquete
 
 Clic en **"+ Nuevo elemento"** → arrastra o selecciona
-`dist/float-video-pro-v1.0.0.zip`.
+`dist/super-video-popup-v1.0.0.zip`.
 
 ## 2. Completar la ficha del Store
 
 | Campo | Qué poner |
 |---|---|
-| Nombre | Float Video Pro |
+| Nombre | Super Video Popup |
 | Descripción resumida (132 caracteres) | "Reproduce cualquier video en una ventana flotante siempre visible, con play/pausa, volumen y tamaño ajustable." |
 | Descripción detallada | Puedes usar el bloque de "Características" del [README.md](README.md) |
 | Categoría | Herramientas (Tools) |

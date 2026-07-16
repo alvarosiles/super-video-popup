@@ -216,7 +216,7 @@ def main():
         sys.exit(1)
     ext_id = result["id"]
     browser_c.close()
-    print(f"Float Video Pro cargada. ID: {ext_id}")
+    print(f"Super Video Popup cargada. ID: {ext_id}")
 
     # Confirmar que no hay errores de manifest antes de seguir.
     c.call("Page.navigate", {"url": "chrome://extensions/"})

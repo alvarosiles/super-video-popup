@@ -1,17 +1,22 @@
 /**
- * popup.js — Float Video Pro
+ * popup.js — Super Video Popup
  * ─────────────────────────────────────────────────────────────────────────
  * UI del popup: muestra la pestaña activa, si tiene video, y controla la
  * ventana flotante de esa misma pestaña.
  *
  * Detalle importante: activar el Picture-in-Picture exige un gesto de
  * usuario "fresco" sobre el documento de la página (no del popup). Por eso
- * el botón principal NO envía un chrome.runtime.sendMessage genérico —
- * llama a chrome.scripting.executeScript de forma directa y síncrona
- * dentro del propio manejador de click, que es la única forma soportada de
- * preservar esa activación hasta pip.js. Cerrar y redimensionar sí pueden
- * ir por el camino normal de mensajes, porque no abren ninguna ventana
- * nueva.
+ * la activación NUNCA pasa por un chrome.runtime.sendMessage genérico —
+ * usa chrome.scripting.executeScript de forma directa y síncrona, que es
+ * la única forma soportada de preservar esa activación hasta pip.js.
+ * Cerrar y redimensionar sí pueden ir por el camino normal de mensajes,
+ * porque no abren ninguna ventana nueva.
+ *
+ * Comportamiento por defecto: abrir el popup (clic en el icono de la
+ * extensión) YA activa el Picture-in-Picture en tamaño M si la pestaña
+ * tiene un video, sin necesidad de un segundo clic. El botón dentro del
+ * popup queda disponible para cerrarlo de nuevo o para reabrirlo si el
+ * video apareció después.
  */
 
 (() => {
@@ -75,12 +80,33 @@
     }
   }
 
-  async function highlightSavedSize() {
-    const data = await chrome.storage.local.get(['fvpLastSize']);
-    const size = data.fvpLastSize || 'M';
+  function highlightSize(size) {
     for (const btn of els.sizeButtons) {
       btn.classList.toggle('active', btn.dataset.size === size);
     }
+  }
+
+  /**
+   * Activa el PiP en tamaño M, pero solo si la pestaña tiene video y todavía
+   * no hay una ventana flotante abierta (comprobado dentro del propio tab,
+   * en la misma llamada, para no perder el gesto de usuario en una vuelta
+   * de mensajes). Es una llamada "fire and forget": el resultado se refleja
+   * después vía refreshState().
+   */
+  function autoActivate(tabId) {
+    chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => {
+        if (
+          window.FVP_PiP &&
+          !window.FVP_PiP.isOpen() &&
+          window.FVP_findBestVideo &&
+          window.FVP_findBestVideo()
+        ) {
+          window.FVP_PiP.open();
+        }
+      },
+    });
   }
 
   async function init() {
@@ -88,6 +114,10 @@
     if (!tab) return;
 
     local.tabId = tab.id;
+
+    // Se dispara ANTES que cualquier otro await para preservar el gesto de
+    // usuario que abrió el popup (clic en el icono de la extensión).
+    autoActivate(tab.id);
 
     let domain = '';
     try {
@@ -103,8 +133,11 @@
       els.favicon.src = FALLBACK_FAVICON;
     };
 
-    await highlightSavedSize();
-    await refreshState();
+    highlightSize('M');
+
+    // Le da un instante a autoActivate() para completarse antes de leer el
+    // estado real (abrir la ventana Document PiP no es instantáneo).
+    setTimeout(refreshState, 350);
   }
 
   // ── Botón principal: activar/cerrar PiP ─────────────────────────────────
@@ -127,16 +160,14 @@
   });
 
   // ── Presets de tamaño ────────────────────────────────────────────────────
+  // Redimensionar una ventana YA abierta no requiere gesto de usuario: esto
+  // sí puede ir por el mensaje normal a content.js.
   for (const btn of els.sizeButtons) {
     btn.addEventListener('click', async () => {
       const size = btn.dataset.size;
-      for (const b of els.sizeButtons) b.classList.toggle('active', b === btn);
-      await chrome.storage.local.set({ fvpLastSize: size });
-
-      // Redimensionar una ventana YA abierta no requiere gesto de usuario:
-      // esto sí puede ir por el mensaje normal.
+      highlightSize(size);
       const response = await sendToContentScript({ type: 'FVP_RESIZE', size });
-      if (!response) showStatus(`Tamaño ${size} guardado para la próxima vez`);
+      if (!response) showStatus('Abre primero el Picture-in-Picture para poder redimensionarlo');
     });
   }
 

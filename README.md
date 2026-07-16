@@ -1,4 +1,8 @@
-# 🖼️ Float Video Pro
+# 🖼️ Super Video Popup
+
+> Super Video Popup is a Chrome extension that allows users to watch videos
+> in a floating popup window while browsing other websites. Built with
+> Manifest V3 and modern Web APIs.
 
 Extensión para **Google Chrome / Edge** (Manifest V3) que reproduce
 cualquier video HTML5 en una **ventana flotante** que se mantiene encima de
@@ -6,7 +10,7 @@ las demás ventanas — sigues viendo el video mientras trabajas en otra
 pestaña, otra app, o incluso otro monitor.
 
 A diferencia de la Picture-in-Picture nativa del navegador (un simple
-rectángulo de video sin más), Float Video Pro usa la **Document
+rectángulo de video sin más), Super Video Popup usa la **Document
 Picture-in-Picture API** para dibujar sus propios controles dentro de la
 ventana flotante: play/pausa, volumen, silenciar y tamaño (S/M/L).
 
@@ -32,17 +36,20 @@ ventana flotante: play/pausa, volumen, silenciar y tamaño (S/M/L).
 
 ## Características
 
+- **Un solo clic en el icono de la extensión activa el Picture-in-Picture
+  en tamaño M** si la pestaña tiene un video — no hace falta abrir el
+  popup y pulsar un botón aparte.
 - Ventana flotante que permanece **encima de todas las ventanas**, incluso
   fuera del navegador (Document Picture-in-Picture, no solo "siempre
   encima de esta pestaña").
 - Controles propios dentro de la ventana flotante: **play/pausa**,
-  **volumen**, **silenciar** y **3 tamaños** (S/M/L).
+  **volumen**, **silenciar** y **3 tamaños** (S/M/L, cambiables en
+  cualquier momento mientras está abierta).
 - Detecta automáticamente el `<video>` de la página, incluido en sitios
   SPA que lo montan dinámicamente (YouTube, Netflix, Twitch, Vimeo...).
 - Si hay varios videos en la página, elige el que se está reproduciendo (o
   el más grande visualmente si ninguno está en play).
 - Atajos de teclado globales para activar y cerrar la ventana flotante.
-- Recuerda el último tamaño usado entre sesiones.
 - Al cerrar la ventana flotante, el video **vuelve exactamente** a su
   lugar original en la página (mismo padre, misma posición, mismo estilo).
 - Tema oscuro, sin dependencias externas, sin llamadas de red.
@@ -88,19 +95,19 @@ normal *no* cuenta como gesto de usuario a ojos de la página. Por eso el
 flujo es:
 
 ```
-Clic en el popup / atajo de teclado
+Clic en el icono de la extensión / atajo de teclado
         │
         ▼
 chrome.scripting.executeScript(...)   ← llamada SÍNCRONA, en el mismo
         │                                manejador del clic/atajo
         ▼
-window.FVP_PiP.toggle()  (pip.js, ya inyectado en la pestaña)
+window.FVP_PiP.open()  (pip.js, ya inyectado en la pestaña)
         │
         ▼
 documentPictureInPicture.requestWindow()  ← se acepta porque el gesto
         │                                    todavía está "fresco"
         ▼
-Ventana flotante con controles propios
+Ventana flotante con controles propios, en tamaño M
 ```
 
 - **`content.js`** vive en la pestaña (se inyecta en todas las páginas) y
@@ -110,11 +117,11 @@ Ventana flotante con controles propios
   `window.FVP_PiP`) construye la ventana flotante: mueve el `<video>` real
   dentro de ella, inyecta sus propios estilos y controles, y lo devuelve a
   su sitio original al cerrarse.
-- **`popup.js`** y **`background.js`** son los dos únicos lugares que
-  *activan* el PiP, y ambos lo hacen con `chrome.scripting.executeScript`
-  llamado de forma síncrona dentro del manejador del clic / del atajo de
-  teclado — la única forma soportada de preservar el gesto de usuario
-  hasta `pip.js`.
+- **`popup.js`** activa el PiP en cuanto el popup termina de abrirse
+  (mismo gesto que el clic en el icono de la extensión) y **`background.js`**
+  hace lo mismo desde `chrome.commands.onCommand` para el atajo de teclado.
+  Ambos usan `chrome.scripting.executeScript` llamado de forma síncrona —
+  la única forma soportada de preservar el gesto de usuario hasta `pip.js`.
 
 ---
 
@@ -133,7 +140,7 @@ Ventana flotante con controles propios
 ./scripts/2-test-extension.sh # Abre Chrome con la extensión YA cargada
                                # en un perfil de pruebas aislado, más una
                                # URL de YouTube lista para probar.
-./scripts/3-build.sh          # Genera dist/float-video-pro-v<version>.zip
+./scripts/3-build.sh          # Genera dist/super-video-popup-v<version>.zip
 ```
 
 ---
@@ -144,7 +151,7 @@ Guía completa en **[PUBLISHING.md](PUBLISHING.md)**. Resumen rápido:
 
 ```bash
 ./scripts/3-build.sh
-# → dist/float-video-pro-v1.0.0.zip
+# → dist/super-video-popup-v1.0.0.zip
 ```
 
 Sube ese `.zip` en el
@@ -185,7 +192,6 @@ elige otra combinación, como `Ctrl+Shift+X`).
 
 | Permiso | Para qué se usa |
 |---|---|
-| `storage` | Recordar el último tamaño de ventana usado (`chrome.storage.local`). |
 | `activeTab` | Identificar la pestaña activa al abrir el popup / usar un atajo. |
 | `scripting` | `chrome.scripting.executeScript`, necesario para activar el PiP preservando el gesto de usuario. |
 | `host_permissions: <all_urls>` | Inyectar `content.js`/`pip.js` en cualquier sitio para poder detectar y flotar su video, no solo una lista fija. |
@@ -208,6 +214,6 @@ No se usa `tabCapture` ni se envían datos a ningún servidor.
   "flotar" visualmente).
 - Un video con contenido de otro origen sin cabeceras CORS puede impedir
   algunas operaciones del navegador sobre el elemento; en ese caso,
-  Float Video Pro sigue pudiendo moverlo a la ventana flotante (no se
+  Super Video Popup sigue pudiendo moverlo a la ventana flotante (no se
   necesita `createMediaElementSource` como en un extractor de audio), así
   que este caso es poco frecuente.

@@ -1,5 +1,5 @@
 /**
- * background.js — Float Video Pro
+ * background.js — Super Video Popup
  * ─────────────────────────────────────────────────────────────────────────
  * Service worker de Manifest V3. Su única responsabilidad es traducir los
  * atajos de teclado (chrome.commands) en acciones sobre la pestaña activa.

@@ -1,5 +1,5 @@
 /**
- * content.js — Float Video Pro
+ * content.js — Super Video Popup
  * ─────────────────────────────────────────────────────────────────────────
  * Se inyecta en todas las páginas (ver manifest.json) y es responsable de:
  *

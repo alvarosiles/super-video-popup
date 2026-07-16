@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# 1-install.sh — Float Video Pro
+# 1-install.sh — Super Video Popup
 # ─────────────────────────────────────────────────────────────────────────
 # Chrome no permite instalar una extensión descomprimida de forma 100%
 # silenciosa por línea de comandos (por seguridad, "Cargar descomprimida"
@@ -51,7 +51,7 @@ elif command -v wl-copy >/dev/null 2>&1; then
 fi
 
 echo "======================================================"
-echo " Float Video Pro — Instalación en tu Chrome"
+echo " Super Video Popup — Instalación en tu Chrome"
 echo "======================================================"
 echo
 echo "Carpeta de la extensión:"
@@ -65,7 +65,7 @@ echo "  1. Se abrirá chrome://extensions en tu navegador."
 echo "  2. Activa el interruptor 'Modo de desarrollador' (arriba a la derecha)."
 echo "  3. Haz clic en 'Cargar descomprimida'."
 echo "  4. Selecciona la carpeta indicada arriba."
-echo "  5. Fija el icono de Float Video Pro en la barra (icono de puzzle 🧩)."
+echo "  5. Fija el icono de Super Video Popup en la barra (icono de puzzle 🧩)."
 echo
 
 "$BROWSER" "chrome://extensions" >/dev/null 2>&1 &
