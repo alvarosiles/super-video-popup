@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Float Video Pro</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="app__header">
+      <div class="app__brand">
+        <span class="icon icon--brand" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM12 9l6 4-6 4V9z"/>
+          </svg>
+        </span>
+        <h1 class="app__title">Float Video Pro</h1>
+      </div>
+      <span class="app__version">v1.0.0</span>
+    </header>
+
+    <section class="card site-card" id="siteCard">
+      <img id="siteFavicon" class="site-card__favicon" alt="" width="28" height="28" />
+      <div class="site-card__info">
+        <p id="siteTitle" class="site-card__title">Cargando…</p>
+        <p id="siteDomain" class="site-card__domain">—</p>
+      </div>
+      <span id="noVideoBadge" class="badge badge--warning hidden">Sin video</span>
+    </section>
+
+    <section class="card action-card">
+      <button id="toggleBtn" class="btn btn--primary" type="button" disabled>
+        <svg viewBox="0 0 24 24" class="icon" focusable="false" aria-hidden="true">
+          <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM12 9l6 4-6 4V9z"/>
+        </svg>
+        <span id="toggleLabel">Activar Picture-in-Picture</span>
+      </button>
+
+      <div class="size-row">
+        <span class="size-row__label">Tamaño</span>
+        <div class="size-row__buttons" id="sizeButtons">
+          <button class="size-btn" data-size="S" type="button">S</button>
+          <button class="size-btn" data-size="M" type="button">M</button>
+          <button class="size-btn" data-size="L" type="button">L</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card shortcuts-card">
+      <p class="shortcuts-card__title">Atajos de teclado</p>
+      <div class="shortcuts-card__row">
+        <span>Activar PiP</span>
+        <kbd>Ctrl+Shift+P</kbd>
+      </div>
+      <div class="shortcuts-card__row">
+        <span>Cerrar ventana</span>
+        <kbd>Ctrl+Shift+C</kbd>
+      </div>
+      <p class="shortcuts-card__hint">
+        Si un atajo no responde, revisa <code>chrome://extensions/shortcuts</code>
+        (Ctrl+Shift+C puede estar reservado por Chrome).
+      </p>
+    </section>
+
+    <footer class="app__footer">
+      <span id="statusMessage" class="app__status"></span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
