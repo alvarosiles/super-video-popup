@@ -238,6 +238,18 @@ def main():
         print(f"AVISO: la extensión tiene {info['manifestErrors']} error(es) de manifest. Revisa chrome://extensions.", file=sys.stderr)
 
     c.call("Page.navigate", {"url": target_url})
+    time.sleep(1.5)
+
+    # Recarga forzada: si esta es la primerísima navegación de la pestaña
+    # justo después de Extensions.loadUnpacked, Chrome puede no haber
+    # propagado todavía el registro del content script a tiempo para esa
+    # navegación en concreto (el content script simplemente no se inyecta,
+    # sin ningún error visible). Una recarga aquí garantiza que la página
+    # quede con content.js/pip.js realmente activos antes de entregarle el
+    # control al usuario.
+    c.call("Page.reload")
+    time.sleep(1)
+
     c.close()
     print(f"Abriendo: {target_url}")
 
