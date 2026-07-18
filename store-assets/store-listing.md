@@ -22,11 +22,12 @@ cambias de monitor. Ese es su único propósito: no hace nada más.
 
 ## Descripción corta / resumida (máx. 132 caracteres, para el listado)
 
+Copiar como una sola línea (el campo del Dashboard no admite saltos de línea):
+
 ```
-Reproduce cualquier video en una ventana flotante siempre visible, con
-play/pausa, volumen y tamaño ajustable (S/M/L).
+Reproduce cualquier video en una ventana flotante siempre visible, con play/pausa, volumen y tamaño ajustable (S/M/L).
 ```
-(115 caracteres)
+(118 caracteres)
 
 ## Descripción larga
 

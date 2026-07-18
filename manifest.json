@@ -3,7 +3,7 @@
   "name": "Super Video Popup",
   "short_name": "Super Video Popup",
   "version": "1.0.0",
-  "description": "Super Video Popup is a Chrome extension that allows users to watch videos in a floating popup window while browsing other websites. Built with Manifest V3 and modern Web APIs.",
+  "description": "Watch videos in a floating popup window that stays on top while you browse other tabs or apps.",
   "author": "alvarosiles",
   "homepage_url": "https://github.com/alvarosiles/super-video-popup",
 

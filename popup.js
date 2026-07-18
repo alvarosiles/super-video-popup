@@ -94,19 +94,24 @@
    * después vía refreshState().
    */
   function autoActivate(tabId) {
-    chrome.scripting.executeScript({
-      target: { tabId },
-      func: () => {
-        if (
-          window.FVP_PiP &&
-          !window.FVP_PiP.isOpen() &&
-          window.FVP_findBestVideo &&
-          window.FVP_findBestVideo()
-        ) {
-          window.FVP_PiP.open();
-        }
-      },
-    });
+    chrome.scripting
+      .executeScript({
+        target: { tabId },
+        func: () => {
+          if (
+            window.FVP_PiP &&
+            !window.FVP_PiP.isOpen() &&
+            window.FVP_findBestVideo &&
+            window.FVP_findBestVideo()
+          ) {
+            window.FVP_PiP.open();
+          }
+        },
+      })
+      .catch(() => {
+        // Páginas especiales (chrome://, Web Store, visor de PDF...) no
+        // admiten inyección de scripts; refreshState() ya refleja "sin video".
+      });
   }
 
   async function init() {
@@ -147,12 +152,16 @@
     // Llamada SÍNCRONA dentro del manejador de click: es lo que preserva
     // el gesto de usuario hasta documentPictureInPicture.requestWindow()
     // dentro de pip.js.
-    chrome.scripting.executeScript({
-      target: { tabId: local.tabId },
-      func: () => {
-        if (window.FVP_PiP) window.FVP_PiP.toggle();
-      },
-    });
+    chrome.scripting
+      .executeScript({
+        target: { tabId: local.tabId },
+        func: () => {
+          if (window.FVP_PiP) window.FVP_PiP.toggle();
+        },
+      })
+      .catch(() => {
+        showStatus('Esta página no permite activar Picture-in-Picture.');
+      });
 
     // pip.js tarda un instante en abrir/cerrar la ventana; refrescamos el
     // estado poco después para reflejar el resultado en el botón.

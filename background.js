@@ -23,12 +23,17 @@ chrome.commands.onCommand.addListener(async (command) => {
   if (!tab || tab.id == null) return;
 
   if (command === 'activate-pip') {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: () => {
-        if (window.FVP_PiP) window.FVP_PiP.toggle();
-      },
-    });
+    chrome.scripting
+      .executeScript({
+        target: { tabId: tab.id },
+        func: () => {
+          if (window.FVP_PiP) window.FVP_PiP.toggle();
+        },
+      })
+      .catch(() => {
+        // Páginas especiales (chrome://, Web Store, visor de PDF...) no
+        // admiten inyección de scripts; no hay nada que hacer en ese caso.
+      });
   } else if (command === 'close-pip') {
     chrome.tabs.sendMessage(tab.id, { type: 'FVP_CLOSE_PIP' }, () => {
       // Ignoramos chrome.runtime.lastError: puede no haber content script
