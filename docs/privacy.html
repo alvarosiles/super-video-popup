@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Política de privacidad — Super Video Popup</title>
+<style>
+  :root{
+    --bg:#202124; --card:#2d2f33; --accent:#7c5cfc; --text:#ffffff;
+    --text-secondary:#9aa0a6; --border:#3c4043;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f5f6f8; --card:#ffffff; --text:#1f2124; --text-secondary:#5f6368; --border:#e1e3e6; }
+  }
+  :root[data-theme="dark"]{ --bg:#202124; --card:#2d2f33; --text:#ffffff; --text-secondary:#9aa0a6; --border:#3c4043; }
+  :root[data-theme="light"]{ --bg:#f5f6f8; --card:#ffffff; --text:#1f2124; --text-secondary:#5f6368; --border:#e1e3e6; }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px;}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+  .logo{width:36px;height:36px;border-radius:10px;background:var(--accent);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .logo svg{width:20px;height:20px;fill:#fff;}
+  h1{font-size:26px;margin:0;}
+  .updated{color:var(--text-secondary);font-size:13px;margin:0 0 36px;}
+  h2{font-size:18px;margin:36px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+  p{color:var(--text);}
+  ul{padding-left:20px;}
+  li{margin:6px 0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;overflow-x:auto;display:block;}
+  th,td{text-align:left;padding:10px 12px;border:1px solid var(--border);font-size:14px;vertical-align:top;}
+  th{background:var(--card);}
+  .card{background:var(--card);border-radius:12px;padding:16px 20px;margin:16px 0;}
+  .yes{color:#34a853;font-weight:700;}
+  .no{color:#f28b82;font-weight:700;}
+  a{color:var(--accent);}
+  footer{margin-top:48px;color:var(--text-secondary);font-size:13px;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="logo"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM12 9l6 4-6 4V9z"/></svg></span>
+      <h1>Política de privacidad — Super Video Popup</h1>
+    </header>
+    <p class="updated">Última actualización: 18 de julio de 2026</p>
+
+    <div class="card">
+      <p style="margin:0"><span class="no">Super Video Popup no recolecta, almacena, ni transmite ningún dato del usuario.</span>
+      Toda la funcionalidad ocurre localmente en tu navegador.</p>
+    </div>
+
+    <h2>Qué hace la extensión</h2>
+    <p>
+      Super Video Popup es una extensión de Chrome/Edge (Manifest V3) que
+      detecta el video de la pestaña activa y lo muestra en una ventana
+      flotante (Document Picture-in-Picture) que permanece encima de otras
+      ventanas, con controles propios de play/pausa, volumen y tamaño.
+    </p>
+
+    <h2>Qué datos recolecta</h2>
+    <table>
+      <thead><tr><th>Tipo de dato</th><th>¿Se recolecta?</th></tr></thead>
+      <tbody>
+        <tr><td>Información personal identificable</td><td class="no">No</td></tr>
+        <tr><td>Historial de navegación</td><td class="no">No</td></tr>
+        <tr><td>Contenido de las páginas que visitas</td><td class="no">No</td></tr>
+        <tr><td>Ubicación</td><td class="no">No</td></tr>
+        <tr><td>Datos financieros o de autenticación</td><td class="no">No</td></tr>
+        <tr><td>Analítica de uso / telemetría</td><td class="no">No</td></tr>
+      </tbody>
+    </table>
+    <p>
+      La extensión lee el elemento <code>&lt;video&gt;</code> de la
+      pestaña activa únicamente para poder moverlo a la ventana flotante;
+      esa información nunca sale de tu navegador ni se guarda en ningún
+      lado (ni siquiera localmente vía <code>chrome.storage</code>).
+    </p>
+
+    <h2>Qué NO hace Super Video Popup</h2>
+    <ul>
+      <li>No vende ni comparte datos con terceros.</li>
+      <li>No usa analítica ni herramientas de rastreo de ningún tipo.</li>
+      <li>No carga ni ejecuta código remoto: todo el JavaScript viene empaquetado en la extensión.</li>
+      <li>No hace ninguna petición de red (no usa <code>fetch</code> ni <code>XMLHttpRequest</code>).</li>
+      <li>No requiere cuenta, registro ni inicio de sesión.</li>
+    </ul>
+
+    <h2>Permisos que solicita y por qué</h2>
+    <table>
+      <thead><tr><th>Permiso</th><th>Justificación</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>activeTab</code></td>
+          <td>Identificar la pestaña activa al abrir el popup o usar un atajo de teclado.</td>
+        </tr>
+        <tr>
+          <td><code>scripting</code></td>
+          <td>Ejecutar el script que abre la ventana flotante en respuesta directa a un clic o atajo, preservando el gesto de usuario que la API del navegador exige.</td>
+        </tr>
+        <tr>
+          <td><code>host_permissions</code> (<code>&lt;all_urls&gt;</code>)</td>
+          <td>Poder detectar y flotar el video de cualquier sitio, sin limitarse a una lista fija de dominios.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Cómo borrar tus datos</h2>
+    <p>
+      Como la extensión no recolecta ni almacena ningún dato, no existe
+      información que borrar. Si de todas formas quieres eliminar
+      cualquier configuración local del navegador asociada a la
+      extensión, basta con desinstalarla desde
+      <code>chrome://extensions</code>.
+    </p>
+
+    <h2>Cambios a esta política</h2>
+    <p>
+      Si el propósito o los permisos de la extensión cambian en el
+      futuro, esta página se actualizará y la fecha de "última
+      actualización" reflejará el cambio.
+    </p>
+
+    <h2>Contacto</h2>
+    <p>
+      Para preguntas sobre esta política o sobre la extensión, escribe a
+      <a href="mailto:alvarosiles.developer@gmail.com">alvarosiles.developer@gmail.com</a>.
+    </p>
+
+    <footer>
+      Super Video Popup — <a href="index.html">Volver al inicio</a>
+    </footer>
+  </div>
+</body>
+</html>

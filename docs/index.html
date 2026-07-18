@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Super Video Popup</title>
+<style>
+  :root{
+    --bg:#202124; --card:#2d2f33; --accent:#7c5cfc; --accent-hover:#9277ff;
+    --text:#ffffff; --text-secondary:#9aa0a6; --border:#3c4043;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f5f6f8; --card:#ffffff; --text:#1f2124; --text-secondary:#5f6368; --border:#e1e3e6; }
+  }
+  :root[data-theme="dark"]{ --bg:#202124; --card:#2d2f33; --text:#ffffff; --text-secondary:#9aa0a6; --border:#3c4043; }
+  :root[data-theme="light"]{ --bg:#f5f6f8; --card:#ffffff; --text:#1f2124; --text-secondary:#5f6368; --border:#e1e3e6; }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+  }
+  .hero{max-width:920px;margin:0 auto;padding:72px 24px 40px;text-align:center;}
+  .logo{width:72px;height:72px;border-radius:20px;background:var(--accent);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
+    box-shadow:0 16px 40px rgba(124,92,252,.4);}
+  .logo svg{width:38px;height:38px;fill:#fff;}
+  h1{font-size:34px;margin:0 0 12px;}
+  .lead{color:var(--text-secondary);font-size:17px;max-width:620px;margin:0 auto 32px;line-height:1.6;}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;
+    font-weight:600;text-decoration:none;font-size:14px;transition:background 150ms ease;}
+  .btn--primary{background:var(--accent);color:#fff;}
+  .btn--primary:hover{background:var(--accent-hover);}
+  .btn--ghost{background:var(--card);color:var(--text);border:1px solid var(--border);}
+
+  .features{max-width:920px;margin:0 auto;padding:40px 24px 80px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+  .card{background:var(--card);border-radius:14px;padding:20px;border:1px solid var(--border);}
+  .card h3{margin:0 0 8px;font-size:15px;}
+  .card p{margin:0;color:var(--text-secondary);font-size:13.5px;line-height:1.55;}
+
+  footer{max-width:920px;margin:0 auto;padding:0 24px 48px;color:var(--text-secondary);
+    font-size:13px;text-align:center;}
+  footer a{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="logo"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM12 9l6 4-6 4V9z"/></svg></div>
+    <h1>Super Video Popup</h1>
+    <p class="lead">
+      Reproduce cualquier video en una ventana flotante que se mantiene
+      encima de todo — el navegador, otras apps, incluso otro monitor —
+      mientras sigues navegando o trabajando.
+    </p>
+    <div class="cta">
+      <a class="btn btn--primary" href="https://chrome.google.com/webstore/devconsole" target="_blank" rel="noopener">Ver en Chrome Web Store</a>
+      <a class="btn btn--ghost" href="privacy.html">Política de privacidad</a>
+      <a class="btn btn--ghost" href="https://github.com/alvarosiles/super-video-popup" target="_blank" rel="noopener">Código en GitHub</a>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="card">
+      <h3>Un solo clic</h3>
+      <p>Abrir el popup ya activa el Picture-in-Picture en tamaño mediano si la pestaña tiene video.</p>
+    </div>
+    <div class="card">
+      <h3>Controles propios</h3>
+      <p>Play/pausa, volumen, silenciar y tres tamaños ajustables (S/M/L) sin cerrar la ventana.</p>
+    </div>
+    <div class="card">
+      <h3>Detección automática</h3>
+      <p>Encuentra el video aunque se cargue después, incluso en sitios que lo montan dinámicamente.</p>
+    </div>
+    <div class="card">
+      <h3>Sin rastreo</h3>
+      <p>No recolecta datos, no usa analítica, no carga código remoto. Todo ocurre en tu navegador.</p>
+    </div>
+  </div>
+
+  <footer>
+    Super Video Popup — <a href="mailto:alvarosiles.developer@gmail.com">alvarosiles.developer@gmail.com</a>
+  </footer>
+</body>
+</html>
