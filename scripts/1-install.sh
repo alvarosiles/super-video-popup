@@ -31,7 +31,7 @@ done
 
 if [[ -z "$BROWSER" ]]; then
   echo "No se encontró Chrome/Chromium/Edge instalado en el sistema." >&2
-  echo "Instala Google Chrome y vuelve a ejecutar este script." >&2
+  echo "Instala Chrome y vuelve a ejecutar este script." >&2
   exit 1
 fi
 

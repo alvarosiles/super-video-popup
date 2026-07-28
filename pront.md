@@ -43,7 +43,7 @@ Características:
 - Usar Manifest V3.
 - Usar Picture-in-Picture API.
 - Detectar elementos video/audio automáticamente.
-- Funcionar en YouTube, Netflix, Twitch, Vimeo y páginas con HTML5 video.
+- Funcionar en cualquier página con HTML5 video.
 - Crear popup moderno.
 - Permitir activar y cerrar PiP.
 - Controles:

@@ -10,7 +10,7 @@ a mano, serían varios clics en chrome://extensions:
   2. Carga la extensión con el método oficial Extensions.loadUnpacked
      (el reemplazo moderno del flag de línea de comandos, que Chrome
      empezó a ignorar en versiones recientes si Developer mode está off).
-  3. Abre la URL de prueba (por defecto, YouTube) en la misma pestaña.
+  3. Abre la URL de prueba (por defecto, un video de muestra) en la misma pestaña.
 
 No depende de ningún paquete externo (no hay 'websocket-client' ni
 'websockets' instalados en este sistema): implementa a mano el handshake y

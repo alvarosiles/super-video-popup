@@ -9,14 +9,14 @@
  * la activación NUNCA pasa por un chrome.runtime.sendMessage genérico —
  * usa chrome.scripting.executeScript de forma directa y síncrona, que es
  * la única forma soportada de preservar esa activación hasta pip.js.
- * Cerrar y redimensionar sí pueden ir por el camino normal de mensajes,
- * porque no abren ninguna ventana nueva.
+ * Cerrar sí puede ir por el camino normal de mensajes, porque no abre
+ * ninguna ventana nueva.
  *
  * Comportamiento por defecto: abrir el popup (clic en el icono de la
- * extensión) YA activa el Picture-in-Picture en tamaño M si la pestaña
- * tiene un video, sin necesidad de un segundo clic. El botón dentro del
- * popup queda disponible para cerrarlo de nuevo o para reabrirlo si el
- * video apareció después.
+ * extensión) YA activa el Picture-in-Picture si la pestaña tiene un video,
+ * sin necesidad de un segundo clic. El botón dentro del popup queda
+ * disponible para cerrarlo de nuevo o para reabrirlo si el video apareció
+ * después.
  */
 
 (() => {
@@ -29,7 +29,6 @@
     noVideoBadge: document.getElementById('noVideoBadge'),
     toggleBtn: document.getElementById('toggleBtn'),
     toggleLabel: document.getElementById('toggleLabel'),
-    sizeButtons: Array.from(document.querySelectorAll('.size-btn')),
     status: document.getElementById('statusMessage'),
   };
 
@@ -80,18 +79,12 @@
     }
   }
 
-  function highlightSize(size) {
-    for (const btn of els.sizeButtons) {
-      btn.classList.toggle('active', btn.dataset.size === size);
-    }
-  }
-
   /**
-   * Activa el PiP en tamaño M, pero solo si la pestaña tiene video y todavía
-   * no hay una ventana flotante abierta (comprobado dentro del propio tab,
-   * en la misma llamada, para no perder el gesto de usuario en una vuelta
-   * de mensajes). Es una llamada "fire and forget": el resultado se refleja
-   * después vía refreshState().
+   * Activa el PiP, pero solo si la pestaña tiene video y todavía no hay una
+   * ventana flotante abierta (comprobado dentro del propio tab, en la misma
+   * llamada, para no perder el gesto de usuario en una vuelta de mensajes).
+   * Es una llamada "fire and forget": el resultado se refleja después vía
+   * refreshState().
    */
   function autoActivate(tabId) {
     chrome.scripting
@@ -138,10 +131,8 @@
       els.favicon.src = FALLBACK_FAVICON;
     };
 
-    highlightSize('M');
-
     // Le da un instante a autoActivate() para completarse antes de leer el
-    // estado real (abrir la ventana Document PiP no es instantáneo).
+    // estado real (abrir la Picture-in-Picture no es instantáneo).
     setTimeout(refreshState, 350);
   }
 
@@ -150,8 +141,8 @@
     if (local.tabId == null) return;
 
     // Llamada SÍNCRONA dentro del manejador de click: es lo que preserva
-    // el gesto de usuario hasta documentPictureInPicture.requestWindow()
-    // dentro de pip.js.
+    // el gesto de usuario hasta video.requestPictureInPicture() dentro de
+    // pip.js.
     chrome.scripting
       .executeScript({
         target: { tabId: local.tabId },
@@ -167,18 +158,6 @@
     // estado poco después para reflejar el resultado en el botón.
     setTimeout(refreshState, 400);
   });
-
-  // ── Presets de tamaño ────────────────────────────────────────────────────
-  // Redimensionar una ventana YA abierta no requiere gesto de usuario: esto
-  // sí puede ir por el mensaje normal a content.js.
-  for (const btn of els.sizeButtons) {
-    btn.addEventListener('click', async () => {
-      const size = btn.dataset.size;
-      highlightSize(size);
-      const response = await sendToContentScript({ type: 'FVP_RESIZE', size });
-      if (!response) showStatus('Abre primero el Picture-in-Picture para poder redimensionarlo');
-    });
-  }
 
   init();
 })();

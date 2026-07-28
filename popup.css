@@ -199,46 +199,6 @@ body {
   background: #ff6a5c;
 }
 
-.size-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.size-row__label {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.size-row__buttons {
-  display: flex;
-  gap: 6px;
-}
-
-.size-btn {
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg);
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.size-btn:hover {
-  border-color: var(--accent);
-  color: var(--text-primary);
-}
-
-.size-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--text-primary);
-}
-
 /* Atajos */
 
 .shortcuts-card__title {

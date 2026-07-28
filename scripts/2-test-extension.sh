@@ -11,18 +11,18 @@
 #   3. Carga Super Video Popup con el método oficial del DevTools Protocol
 #      (Extensions.loadUnpacked) — el reemplazo moderno de --load-extension,
 #      que Chrome empezó a ignorar si Developer mode está apagado.
-#   4. Abre YouTube (o la URL que le pases) para que pruebes directo.
+#   4. Abre una página con video (o la URL que le pases) para que pruebes directo.
 #
 # Uso:
 #   ./scripts/2-test-extension.sh
-#   ./scripts/2-test-extension.sh https://www.netflix.com/
+#   ./scripts/2-test-extension.sh https://example.com/
 
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROFILE_DIR="/tmp/super-video-popup-test-profile"
 PORT=9333
-URL="${1:-https://www.youtube.com/watch?v=jNQXAC9IVRw}"
+URL="${1:-https://www.w3schools.com/html/mov_bbb.mp4}"
 
 BROWSER=""
 for bin in google-chrome google-chrome-stable chromium chromium-browser microsoft-edge microsoft-edge-stable; do

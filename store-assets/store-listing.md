@@ -53,9 +53,8 @@ en cualquier momento sin cerrar la ventana.
 
 ★ DETECCIÓN AUTOMÁTICA
 Encuentra el <video> de la página aunque se cargue después, como en sitios
-que montan el reproductor dinámicamente (YouTube, Netflix, Twitch, Vimeo
-y similares). Si hay varios videos, elige el que se está reproduciendo o,
-si ninguno lo está, el más grande visualmente.
+que montan el reproductor dinámicamente. Si hay varios videos, elige el
+que se está reproduciendo o, si ninguno lo está, el más grande visualmente.
 
 ★ ATAJOS DE TECLADO
 Ctrl+Shift+P para activar el Picture-in-Picture, Ctrl+Shift+C para

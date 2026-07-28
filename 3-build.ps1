@@ -14,7 +14,7 @@
 
 $ErrorActionPreference = 'Stop'
 
-$RootDir = Split-Path -Parent $PSScriptRoot
+$RootDir = $PSScriptRoot
 $DistDir = Join-Path $RootDir 'dist'
 $Manifest = Join-Path $RootDir 'manifest.json'
 
@@ -39,6 +39,7 @@ $Files = @(
     'manifest.json',
     'background.js',
     'content.js',
+    'pip.js',
     'popup.html',
     'popup.css',
     'popup.js',
@@ -61,7 +62,7 @@ if ($Missing) {
 
 # ── 3. Validar sintaxis de los .js si Node está disponible ──────────────
 if (Get-Command node -ErrorAction SilentlyContinue) {
-    foreach ($js in @('background.js', 'content.js', 'popup.js')) {
+    foreach ($js in @('background.js', 'content.js', 'pip.js', 'popup.js')) {
         node --check $js
         if ($LASTEXITCODE -ne 0) {
             Write-Error "Error de sintaxis en $js. Corrígelo antes de compilar."

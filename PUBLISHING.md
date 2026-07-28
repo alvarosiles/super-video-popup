@@ -88,9 +88,9 @@ Para servirlas:
 ## 4. Cuenta de desarrollador
 
 - Cuota única de registro (~$5 USD), si es tu primera publicación.
-- **Verificación en 2 pasos (2FA)** obligatoria en la cuenta de Google que
-  publica. Si ves el error *"Ocurrió un problema al subir el archivo...
-  es necesario que habilites la verificación en 2 pasos"*, actívala en
+- **Verificación en 2 pasos (2FA)** obligatoria en la cuenta que publica.
+  Si ves el error *"Ocurrió un problema al subir el archivo... es
+  necesario que habilites la verificación en 2 pasos"*, actívala en
   [myaccount.google.com/security](https://myaccount.google.com/security)
   y reintenta. Es un paso único por cuenta.
 

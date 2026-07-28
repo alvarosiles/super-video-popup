@@ -4,18 +4,18 @@
  * Se inyecta en todas las páginas (ver manifest.json) y es responsable de:
  *
  *   1. Detectar automáticamente los elementos <video> de la página,
- *      incluidos los que aparecen después de cargar (YouTube, Netflix,
- *      Twitch, Vimeo... son SPAs que montan el reproductor dinámicamente).
+ *      incluidos los que aparecen después de cargar (sitios que son SPAs
+ *      y montan el reproductor de video dinámicamente).
  *   2. Elegir "el mejor" video cuando hay varios en la misma página (el que
  *      se está reproduciendo, o si no el más grande visualmente).
  *   3. Responder a los mensajes del popup/background que NO requieren un
- *      gesto de usuario fresco (consultar estado, cerrar PiP, cambiar de
- *      tamaño). Activar el PiP es la única acción sensible al gesto del
- *      usuario, y por eso NO pasa por aquí — ver pip.js y popup.js.
+ *      gesto de usuario fresco (consultar estado, cerrar PiP). Activar el
+ *      PiP es la única acción sensible al gesto del usuario, y por eso NO
+ *      pasa por aquí — ver pip.js y popup.js.
  *
- * El trabajo real de construir la ventana flotante vive en pip.js, cargado
- * justo después de este archivo en el mismo mundo aislado (namespace
- * compartido en `window.FVP_PiP`).
+ * El trabajo real de activar la Picture-in-Picture nativa vive en pip.js,
+ * cargado justo después de este archivo en el mismo mundo aislado
+ * (namespace compartido en `window.FVP_PiP`).
  */
 
 (() => {
@@ -81,11 +81,6 @@
 
       case 'FVP_CLOSE_PIP':
         if (window.FVP_PiP) window.FVP_PiP.close();
-        sendResponse({ ok: true, state: currentState() });
-        break;
-
-      case 'FVP_RESIZE':
-        if (window.FVP_PiP) window.FVP_PiP.resize(message.size);
         sendResponse({ ok: true, state: currentState() });
         break;
 

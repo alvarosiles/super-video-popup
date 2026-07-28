@@ -4,15 +4,20 @@
 > in a floating popup window while browsing other websites. Built with
 > Manifest V3 and modern Web APIs.
 
-Extensión para **Google Chrome / Edge** (Manifest V3) que reproduce
+Extensión para **Chrome / Edge** (Manifest V3) que reproduce
 cualquier video HTML5 en una **ventana flotante** que se mantiene encima de
 las demás ventanas — sigues viendo el video mientras trabajas en otra
 pestaña, otra app, o incluso otro monitor.
 
-A diferencia de la Picture-in-Picture nativa del navegador (un simple
-rectángulo de video sin más), Super Video Popup usa la **Document
-Picture-in-Picture API** para dibujar sus propios controles dentro de la
-ventana flotante: play/pausa, volumen, silenciar y tamaño (S/M/L).
+Usa la Picture-in-Picture **nativa** del navegador
+(`video.requestPictureInPicture()`), la API pública y estándar que
+implementan Chrome/Edge/Chromium. Se eligió a propósito en vez de la
+Document Picture-in-Picture API: esa otra API permite dibujar controles
+propios, pero el navegador le agrega siempre una barra de título con el
+dominio del sitio que no se puede ocultar ni personalizar. La PiP nativa
+clásica, en cambio, es una ventana mínima sin esa barra — solo el video
+con los controles propios del navegador (play/pausa/mute) apareciendo al
+pasar el mouse.
 
 - **Autor:** [alvarosiles](https://github.com/alvarosiles)
 - **Contacto:** alvarosiles.developer@gmail.com
@@ -36,25 +41,22 @@ ventana flotante: play/pausa, volumen, silenciar y tamaño (S/M/L).
 
 ## Características
 
-- **Un solo clic en el icono de la extensión activa el Picture-in-Picture
-  en tamaño M** si la pestaña tiene un video — no hace falta abrir el
-  popup y pulsar un botón aparte.
-- Ventana flotante que permanece **encima de todas las ventanas**, incluso
-  fuera del navegador (Document Picture-in-Picture, no solo "siempre
-  encima de esta pestaña").
-- Controles propios dentro de la ventana flotante: **play/pausa**,
-  **volumen**, **silenciar** y **3 tamaños** (S/M/L, cambiables en
-  cualquier momento mientras está abierta).
+- **Un solo clic en el icono de la extensión activa el Picture-in-Picture**
+  si la pestaña tiene un video — no hace falta abrir el popup y pulsar un
+  botón aparte.
+- Ventana flotante mínima que permanece **encima de todas las ventanas**,
+  incluso fuera del navegador, sin barra de título ni distracciones: solo
+  el video.
 - Detecta automáticamente el `<video>` de la página, incluido en sitios
-  SPA que lo montan dinámicamente (YouTube, Netflix, Twitch, Vimeo...).
+  SPA que lo montan dinámicamente.
 - Si hay varios videos en la página, elige el que se está reproduciendo (o
   el más grande visualmente si ninguno está en play).
 - Atajos de teclado globales para activar y cerrar la ventana flotante.
-- Al cerrar la ventana flotante, el video **vuelve exactamente** a su
-  lugar original en la página (mismo padre, misma posición, mismo estilo).
-- Tema oscuro, sin dependencias externas, sin llamadas de red.
-- Si el navegador no soporta Document Picture-in-Picture, hace *fallback*
-  automático a la Picture-in-Picture nativa clásica.
+- El video **no se mueve del DOM de la página**: la PiP nativa solo lo
+  "espeja" en la ventana flotante, así que no hay nada que restaurar al
+  cerrarla.
+- Tema oscuro en el popup de la extensión, sin dependencias externas, sin
+  llamadas de red.
 
 ---
 
@@ -104,19 +106,20 @@ chrome.scripting.executeScript(...)   ← llamada SÍNCRONA, en el mismo
 window.FVP_PiP.open()  (pip.js, ya inyectado en la pestaña)
         │
         ▼
-documentPictureInPicture.requestWindow()  ← se acepta porque el gesto
-        │                                    todavía está "fresco"
+video.requestPictureInPicture()  ← se acepta porque el gesto
+        │                          todavía está "fresco"
         ▼
-Ventana flotante con controles propios, en tamaño M
+Ventana flotante nativa del navegador (sin barra de título)
 ```
 
 - **`content.js`** vive en la pestaña (se inyecta en todas las páginas) y
   se encarga de detectar `<video>` y de responder mensajes que **no**
-  requieren gesto (consultar estado, cerrar, redimensionar).
+  requieren gesto (consultar estado, cerrar).
 - **`pip.js`** (mismo mundo aislado que `content.js`, expone
-  `window.FVP_PiP`) construye la ventana flotante: mueve el `<video>` real
-  dentro de ella, inyecta sus propios estilos y controles, y lo devuelve a
-  su sitio original al cerrarse.
+  `window.FVP_PiP`) llama a `video.requestPictureInPicture()` sobre el
+  video elegido. Como esta API no saca el `<video>` del DOM de la página
+  (solo lo "espeja" en la ventana flotante), no hace falta guardar ni
+  restaurar su posición original.
 - **`popup.js`** activa el PiP en cuanto el popup termina de abrirse
   (mismo gesto que el clic en el icono de la extensión) y **`background.js`**
   hace lo mismo desde `chrome.commands.onCommand` para el atajo de teclado.
@@ -139,7 +142,7 @@ Ventana flotante con controles propios, en tamaño M
 ./scripts/1-install.sh        # Abre chrome://extensions en TU Chrome real
 ./scripts/2-test-extension.sh # Abre Chrome con la extensión YA cargada
                                # en un perfil de pruebas aislado, más una
-                               # URL de YouTube lista para probar.
+                               # URL de video lista para probar.
 ./scripts/3-build.sh          # Genera dist/super-video-popup-v<version>.zip
 ```
 
@@ -177,11 +180,9 @@ elige otra combinación, como `Ctrl+Shift+X`).
 ## Personalización
 
 - **Colores**: variables CSS al inicio de [`popup.css`](popup.css)
-  (`--accent`, `--bg`, `--card`...). El violeta `#7C5CFC` también se usa
-  dentro de la ventana flotante — para cambiarlo ahí, edita el bloque
-  `injectStyles()` en [`pip.js`](pip.js).
-- **Tamaños de ventana**: constante `SIZE_PRESETS` en `pip.js`
-  (`{ S, M, L }`, cada uno con `width`/`height` en píxeles).
+  (`--accent`, `--bg`, `--card`...). La ventana flotante en sí no tiene
+  estilos propios: es la PiP nativa del navegador, que no se puede
+  personalizar visualmente desde la extensión.
 - **Iconos**: reemplaza los archivos en `icons/` (mismos nombres/tamaños),
   o edita y vuelve a correr `python3 gen_icons.py`.
 - **Atajos de teclado**: sección `"commands"` de `manifest.json`.
@@ -202,18 +203,21 @@ No se usa `tabCapture` ni se envían datos a ningún servidor.
 
 ## Compatibilidad
 
-- Chrome / Edge **116+** (requiere la Document Picture-in-Picture API).
-- En navegadores más antiguos o sin soporte, hace *fallback* automático a
-  la Picture-in-Picture nativa (`video.requestPictureInPicture()`): sigue
-  funcionando, pero sin los controles propios (usa los del navegador).
+- Cualquier Chrome / Edge con soporte de la Picture-in-Picture API clásica
+  (`video.requestPictureInPicture()`), disponible desde hace varias
+  versiones — no requiere Document Picture-in-Picture ni una versión tan
+  reciente como esa API.
 
 ## Limitaciones conocidas
 
-- Solo apunta a elementos `<video>` (la Picture-in-Picture, nativa o de
-  documento, es un concepto de video; un `<audio>` no tiene nada que
-  "flotar" visualmente).
+- Solo apunta a elementos `<video>` (la Picture-in-Picture es un concepto
+  de video; un `<audio>` no tiene nada que "flotar" visualmente).
+- El tamaño y la posición de la ventana flotante los decide el navegador,
+  no la extensión: no hay presets de tamaño ni controles propios
+  (play/pausa, barra de progreso) dentro de la ventana — solo los que el
+  navegador dibuja por su cuenta.
 - Un video con contenido de otro origen sin cabeceras CORS puede impedir
   algunas operaciones del navegador sobre el elemento; en ese caso,
-  Super Video Popup sigue pudiendo moverlo a la ventana flotante (no se
+  Super Video Popup sigue pudiendo activar la Picture-in-Picture (no se
   necesita `createMediaElementSource` como en un extractor de audio), así
   que este caso es poco frecuente.
