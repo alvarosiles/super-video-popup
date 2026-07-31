@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "Super Video Popup",
+  "short_name": "Super Video Popup",
+  "version": "1.0.0",
+  "description": "Watch videos in a floating popup window that stays on top while you browse other tabs or apps.",
+  "author": "alvarosiles",
+  "homepage_url": "https://github.com/alvarosiles/super-video-popup",
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "action": {
+    "default_title": "Super Video Popup",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js", "pip.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "commands": {
+    "activate-pip": {
+      "suggested_key": { "default": "Ctrl+Shift+P" },
+      "description": "Activar Picture-in-Picture del video actual"
+    },
+    "close-pip": {
+      "suggested_key": { "default": "Ctrl+Shift+C" },
+      "description": "Cerrar la ventana flotante"
+    }
+  },
+
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+
+  "minimum_chrome_version": "116"
+}
